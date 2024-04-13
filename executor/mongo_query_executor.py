@@ -9,7 +9,7 @@ class MongoQueryExecutor(DatabaseQueryExecutor):
         self.collection = self.db[collection_name]
 
     def execute_query(self, query):
-        return list(self.collection.find(query))
+        return list(self.collection.aggregate(query))
 
     def close(self):
         self.client.close()

@@ -10,8 +10,11 @@ most_popular_route_query_postgres = """
     LIMIT 1;
 """
 
-#TODO: Implement real query for MongoDB
-most_popular_route_query_mongo = {"_id": "660adeedfca47a474361b841"}
+most_popular_route_query_mongo = [
+    {"$group": {"_id": "$route_id", "count": {"$sum": 1}}},
+    {"$sort": {"count": -1}},
+    {"$limit": 1}
+]
 
 
 most_popular_route_dict = {
