@@ -1,15 +1,21 @@
+from datetime import timedelta
+import time
 from executor.database_query_executor import DatabaseQueryExecutor
-import couchdb
+from couchbase.cluster import Cluster
+from couchbase.auth import PasswordAuthenticator
+from couchbase.options import ClusterOptions
 
+class CouchbaseQueryExecutor(DatabaseQueryExecutor):
+    def __init__(self, username, password, bucket_name):
+        self.authenticator = PasswordAuthenticator(username, password)
+        self.cluster = Cluster('couchbase://localhost', ClusterOptions(self.authenticator))
+        self.cluster.wait_until_ready(timedelta(seconds=5))
+        self.bucket = self.cluster.bucket(bucket_name)
+        self.collection = self.bucket.default_collection()
 
-class CouchDBQueryExecutor(DatabaseQueryExecutor):
-    def __init__(self, url, dbname):
-        self.server = couchdb.Server(url)
-        self.db = self.server[dbname]
-
-    #TODO: Implement the execute_query method
     def execute_query(self, query):
-        pass
+        result = self.cluster.query(query)
+        return result
 
     def close(self):
-        pass
+        self.cluster.disconnect()
