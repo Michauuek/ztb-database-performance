@@ -21,3 +21,27 @@ most_popular_route_dict = {
     connections[Connections.POSTGRES]: most_popular_route_query_postgres,
     connections[Connections.MONGODB]: most_popular_route_query_mongo
 }
+
+
+avg_delay_and_rating_postgres = """
+    SELECT poj.model, AVG(pr.opoznienie) AS average_delay, AVG(pr.opinia) AS average_opinion
+    FROM pojazd poj
+    JOIN przejazd pr ON poj.id_pojazdu = pr.id_pojazdu
+    GROUP BY poj.model;
+"""
+
+avg_delay_and_rating_dict = {
+    connections[Connections.POSTGRES]: avg_delay_and_rating_postgres
+}
+
+mileage_above_avg_postgres = """
+    SELECT poj.model, poj.spalanie, AVG(pr.opoznienie) AS average_delay
+    FROM pojazd poj
+    JOIN przejazd pr ON poj.id_pojazdu = pr.id_pojazdu
+    WHERE poj.spalanie > (SELECT AVG(spalanie) FROM pojazd)
+    GROUP BY poj.model, poj.spalanie;
+"""
+
+mileage_above_avg_dict = {
+    connections[Connections.POSTGRES]: mileage_above_avg_postgres
+}
