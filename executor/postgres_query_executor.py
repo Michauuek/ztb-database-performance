@@ -14,9 +14,13 @@ class PostgresQueryExecutor(DatabaseQueryExecutor):
         self.cursor = self.connection.cursor()
 
     def execute_query(self, query):
-        self.cursor.execute(query)
-        result = self.cursor.fetchall()
-        return result
+        try:
+            self.cursor.execute(query)
+            result = self.cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+            return None
 
     def close(self):
         self.cursor.close()

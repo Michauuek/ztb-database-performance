@@ -1,13 +1,10 @@
 from executor.database_context import DatabaseContext
-from queries import most_popular_route_dict, avg_delay_and_rating_dict, mileage_above_avg_dict
+from queries import most_popular_route_dict, mileage_above_avg_dict, \
+    avg_load_opinion_by_city_dict, count_tickets_sold_one_day_dict, count_tickets_sold_one_month_dict, \
+    count_tickets_sold_one_day_subquery_dict, metro_rides_count_dict, insert_ride_dict
 
 if __name__ == '__main__':
     db_context = DatabaseContext()
 
-    #single execution
-    times = db_context.execute_all_queries(most_popular_route_dict)
-
-    #multiple executions - 10 times
-    db_context.execute_all_queries_multiple_times(most_popular_route_dict)
-    db_context.execute_all_queries_multiple_times(avg_delay_and_rating_dict)
-    db_context.execute_all_queries_multiple_times(mileage_above_avg_dict)
+    times = db_context.execute_all_queries(insert_ride_dict)
+    print(times)

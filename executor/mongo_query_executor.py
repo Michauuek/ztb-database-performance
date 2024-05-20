@@ -11,5 +11,8 @@ class MongoQueryExecutor(DatabaseQueryExecutor):
     def execute_query(self, query):
         return list(self.collection.aggregate(query))
 
+    def execute_insert_query(self, query):
+        return self.collection.insert_many(query)
+
     def close(self):
         self.client.close()
