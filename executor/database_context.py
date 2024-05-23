@@ -1,6 +1,4 @@
-
 import concurrent.futures
-from time import time
 from executor.database_query_executor import DatabaseQueryExecutor
 
 
@@ -24,6 +22,13 @@ class DatabaseContext:
         for strategy, query in query_dict.items():
             self.strategy = strategy
             results[type(strategy).__name__] = self.execute_query(query)
+        return results
+
+    def execute_all_queries_without_fetch(self, query_dict: dict[DatabaseQueryExecutor, str], action: int = 0):
+        results = {}
+        for strategy, query in query_dict.items():
+            self.strategy = strategy
+            results[type(strategy).__name__] = self.strategy.measure_insert_time(query, action)
         return results
 
     def execute_all_queries_multiple_times(self, query_dict: dict[DatabaseQueryExecutor, str]):

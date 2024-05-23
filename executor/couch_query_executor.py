@@ -5,6 +5,7 @@ from couchbase.cluster import Cluster
 from couchbase.auth import PasswordAuthenticator
 from couchbase.options import ClusterOptions
 
+
 class CouchbaseQueryExecutor(DatabaseQueryExecutor):
     def __init__(self, username, password, bucket_name):
         self.authenticator = PasswordAuthenticator(username, password)
@@ -16,6 +17,9 @@ class CouchbaseQueryExecutor(DatabaseQueryExecutor):
     def execute_query(self, query):
         result = self.cluster.query(query)
         return result
+
+    def execute_without_fetch(self, insert_document, action=0):
+        pass
 
     def close(self):
         self.cluster.disconnect()

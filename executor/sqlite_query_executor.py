@@ -11,6 +11,10 @@ class SQLiteQueryExecutor(DatabaseQueryExecutor):
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
+    def execute_without_fetch(self, insert_statement, action=0):
+        self.cursor.execute(insert_statement)
+        self.connection.commit()
+
     def close(self):
         self.cursor.close()
         self.connection.close()

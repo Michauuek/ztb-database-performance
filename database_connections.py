@@ -20,8 +20,8 @@ postgres = PostgresQueryExecutor(
 
 mongo = MongoQueryExecutor(
     "mongodb://user:password@localhost:27017",
-    "transport",
-    "przejazd")
+    "transport2",
+    "transport")
 
 
 connections = {

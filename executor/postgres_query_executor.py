@@ -14,13 +14,14 @@ class PostgresQueryExecutor(DatabaseQueryExecutor):
         self.cursor = self.connection.cursor()
 
     def execute_query(self, query):
-        try:
-            self.cursor.execute(query)
-            result = self.cursor.fetchall()
-            return result
-        except Exception as e:
-            print(e)
-            return None
+        self.cursor.execute(query)
+        result = self.cursor.fetchall()
+        print(len(result))
+        return result
+
+    def execute_without_fetch(self, insert_statement, action=0):
+        self.cursor.execute(insert_statement)
+        self.connection.commit()
 
     def close(self):
         self.cursor.close()

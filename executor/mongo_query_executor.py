@@ -9,10 +9,17 @@ class MongoQueryExecutor(DatabaseQueryExecutor):
         self.collection = self.db[collection_name]
 
     def execute_query(self, query):
-        return list(self.collection.aggregate(query))
+        result = list(self.collection.aggregate(query))
+        print(result)
+        return result
 
-    def execute_insert_query(self, query):
-        return self.collection.insert_many(query)
+    def execute_without_fetch(self, insert_document, action=0):
+        if action == 0:
+            self.collection.insert_many(insert_document)
+        elif action == 1:
+            self.collection.delete_many(insert_document)
+        elif action == 2:
+            self.collection.update_many(insert_document[0], insert_document[1])
 
     def close(self):
         self.client.close()
