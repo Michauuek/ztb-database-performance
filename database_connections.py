@@ -14,13 +14,13 @@ class Connections(Enum):
 postgres = PostgresQueryExecutor(
     "transport",
     "postgres",
-    "admin",
+    "tajnedane",
     "localhost",
     "5432")
 
 mongo = MongoQueryExecutor(
     "mongodb://user:password@localhost:27017",
-    "transport2",
+    "transport3",
     "transport")
 
 

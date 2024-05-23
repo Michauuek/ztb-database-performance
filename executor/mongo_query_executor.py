@@ -10,7 +10,7 @@ class MongoQueryExecutor(DatabaseQueryExecutor):
 
     def execute_query(self, query):
         result = list(self.collection.aggregate(query))
-        print(result)
+        print(len(result))
         return result
 
     def execute_without_fetch(self, insert_document, action=0):
