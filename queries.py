@@ -29,10 +29,10 @@ FROM ride
 JOIN location ON ride.location_id = location.location_id
 GROUP BY location.city;"""
 
-avg_load_opinion_by_city_postgres = """SELECT AVG(przejazd.srednieoblozenie) as srednie_obciazenie, AVG(przejazd.opinia) as srednia_opinia, lokalizacja.city,
+avg_load_opinion_by_city_postgres = """SELECT AVG(przejazd.srednieoblozenie) as srednie_obciazenie, AVG(przejazd.opinia) as srednia_opinia, lokalizacja.city
 FROM przejazd
 JOIN lokalizacja ON przejazd.location_id = lokalizacja.location_id
-GROUP BY location.city;"""
+GROUP BY lokalizacja.city;"""
 
 avg_load_opinion_by_city_mongo = [
     {
@@ -342,7 +342,7 @@ insert_ride = """INSERT INTO `ride` (KEY, VALUE)
 VALUES ('500000', { "late" : 1, "late_time": 3, "load": 0.48, "location_id": 33, "opinion": 4.64, "ride_id": 4753133, "route_id": 44753512, "ticket_id": 753874, "vehicle_id": 184 })"""
 
 insert_ride_postgres = """INSERT INTO przejazd (id_przejazdu, opoznienie, srednieoblozenie, opinia, id_trasa, id_biletu, id_pojazdu, location_id)
-VALUES ('500005', 1, 0.41, 44, 753874, 184, 123, 8);
+VALUES ('600005', 1, 0.41, 44, 753874, 184, 123, 8);
 """
 
 insert_ride_mongo = [
@@ -357,7 +357,7 @@ insert_ride_mongo = [
             "voivodeship": "kujawsko-pomorskie"
         },
         "ride": {
-            "ride_id": 500004,
+            "ride_id": 600004,
             "vehicle": {
                 "vehicle_id": 74,
                 "type": "Autobus",
@@ -394,12 +394,12 @@ WHERE ride.vehicle_id = 132 AND late = 1"""
 
 delete_simple_postgres = """DELETE
 FROM przejazd
-WHERE id_pojazdu = 132 AND opoznienie = 1;
+WHERE id_pojazdu = 132 AND opoznienie = 0;
 """
 
 delete_simple_mongo = {
     "ride.vehicle_id": 132,
-    "ride.delay": 1
+    "ride.delay": 0
 }
 
 delete_simple_dict = {
@@ -435,14 +435,14 @@ AND id_przejazdu IN (
     FROM przejazd
     WHERE przejazd.opinia > 3.5
 )
-AND opoznienie = 1 
+AND opoznienie = 0 
 AND id_biletu IN (4, 37, 94);
 """
 
 delete_complex_mongo = {
     "ride.vehicle.type": "Tramwaj",
     "ride.opinion": {"$gt": 3.5},
-    "ride.delay": 1,
+    "ride.delay": 0,
     "ride.ticket_id": {"$in": [4, 37, 94]}
 }
 

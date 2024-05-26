@@ -14,7 +14,7 @@ class Connections(Enum):
 postgres = PostgresQueryExecutor(
     "transport",
     "postgres",
-    "tajnedane",
+    "admin",
     "localhost",
     "5432")
 

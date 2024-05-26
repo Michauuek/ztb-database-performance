@@ -1,0 +1,32 @@
+simple_query_dict:
+{'PostgresQueryExecutor': '0.069360', 'MongoQueryExecutor': '0.134685'}
+
+avg_load_opinion_by_city_dict:
+{'PostgresQueryExecutor': '0.152249', 'MongoQueryExecutor': '0.177269'}
+
+count_tickets_sold_one_day_dict:
+{'PostgresQueryExecutor': '0.097890', 'MongoQueryExecutor': '0.141682'}
+
+count_tickets_sold_one_month_dict:
+{'PostgresQueryExecutor': '0.149574', 'MongoQueryExecutor': '0.503587'}
+
+count_tickets_sold_one_day_subquery_dict:
+{'PostgresQueryExecutor': '0.232361', 'MongoQueryExecutor': '0.464983'}
+
+metro_rides_count_dict:
+{'PostgresQueryExecutor': '0.067116', 'MongoQueryExecutor': '0.073929'}
+
+insert_ride_dict:
+{'PostgresQueryExecutor': '0.006648', 'MongoQueryExecutor': '0.002786'}
+
+update_tram_dict:
+{'PostgresQueryExecutor': '0.204491', 'MongoQueryExecutor': '0.443439'}
+
+simple_update_dict:
+{'PostgresQueryExecutor': '0.007079', 'MongoQueryExecutor': '0.114086'}
+
+delete_simple_dict:
+{'PostgresQueryExecutor': '0.168733', 'MongoQueryExecutor': '0.086061'}
+
+delete_complex_dict:
+{'PostgresQueryExecutor': '0.127934', 'MongoQueryExecutor': '0.116418'}
