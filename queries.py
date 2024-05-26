@@ -1,8 +1,6 @@
 from database_connections import Connections, connections, mongo
 from datetime import datetime
 
-
-
 simple_query = """
     SELECT * 
     FROM ride
@@ -21,12 +19,10 @@ simple_query_mongo = [
     }
 ]
 
-
 simple_query_dict = {
     connections[Connections.POSTGRES]: simple_query_postgres,
     connections[Connections.MONGODB]: simple_query_mongo
 }
-
 
 avg_load_opinion_by_city = """SELECT AVG(ride.load) as srednie_obciazenie, AVG(ride.opinion) as srednia_opinia, location.city 
 FROM ride
@@ -38,10 +34,28 @@ FROM przejazd
 JOIN lokalizacja ON przejazd.location_id = lokalizacja.location_id
 GROUP BY location.city;"""
 
-avg_load_opinion_by_city_dict = {
-    connections[Connections.POSTGRES]: avg_load_opinion_by_city_postgres
-}
+avg_load_opinion_by_city_mongo = [
+    {
+        "$group": {
+            "_id": "$location.city",
+            "srednie_obciazenie": {"$avg": "$ride.load"},
+            "srednia_opinia": {"$avg": "$ride.opinion"}
+        }
+    },
+    {
+        "$project": {
+            "city": "$_id",
+            "srednie_obciazenie": 1,
+            "srednia_opinia": 1,
+            "_id": 0
+        }
+    }
+]
 
+avg_load_opinion_by_city_dict = {
+    connections[Connections.POSTGRES]: avg_load_opinion_by_city_postgres,
+    connections[Connections.MONGODB]: avg_load_opinion_by_city_mongo
+}
 
 count_tickets_sold_one_day = """SELECT COUNT(ride.ticket_id) AS count_sold_tickets, 
        location.city, 
@@ -92,7 +106,6 @@ count_tickets_sold_one_day_dict = {
     connections[Connections.POSTGRES]: count_tickets_sold_one_day_postgres,
     connections[Connections.MONGODB]: count_tickets_sold_one_day_mongo
 }
-
 
 count_tickets_sold_one_month = """SELECT COUNT(ride.ticket_id) AS ilosc_biletow_sprzedanych, 
        location.city, 
@@ -157,7 +170,6 @@ count_tickets_sold_one_month_dict = {
     connections[Connections.POSTGRES]: count_tickets_sold_one_month_postgres,
     connections[Connections.MONGODB]: count_tickets_sold_one_month_mongo
 }
-
 
 count_tickets_sold_one_day_subquery = """SELECT COUNT(ride.ticket_id) AS ilosc_biletow_sprzedanych, 
        location.city, 
@@ -241,7 +253,6 @@ count_tickets_sold_one_day_subquery_dict = {
     connections[Connections.MONGODB]: count_tickets_sold_one_day_subquery_mongo
 }
 
-
 metro_rides_count = """SELECT COUNT(*) AS ride_count
 FROM ride
 WHERE vehicle_id IN (
@@ -275,7 +286,6 @@ metro_rides_count_dict = {
     connections[Connections.MONGODB]: metro_rides_count_mongo
 }
 
-
 simple_update = """UPDATE vehicle SET spots = spots + 5 WHERE vehicle_id = 132"""
 
 simple_update_postgres = """UPDATE pojazd SET spots = spots + 5 WHERE id_pojazdu = 132;"""
@@ -293,7 +303,6 @@ simple_update_dict = {
     connections[Connections.POSTGRES]: simple_update_postgres,
     connections[Connections.MONGODB]: simple_update_mongo
 }
-
 
 update_tram = """UPDATE vehicle SET spots = spots+5 WHERE
 vehicle_id IN (SELECT ride.vehicle_id
@@ -381,16 +390,16 @@ insert_ride_dict = {
 
 delete_simple = """DELETE
 FROM `ride` AS ride
-WHERE ride.vehicle_id = 132 AND late > 10"""
+WHERE ride.vehicle_id = 132 AND late = 1"""
 
 delete_simple_postgres = """DELETE
 FROM przejazd
-WHERE id_pojazdu = 132 AND opoznienie > 10;
+WHERE id_pojazdu = 132 AND opoznienie = 1;
 """
 
 delete_simple_mongo = {
     "ride.vehicle_id": 132,
-    "ride.delay": {"$gt": 10}
+    "ride.delay": 1
 }
 
 delete_simple_dict = {
